@@ -23,3 +23,28 @@ H:\ИСРПО\!Лабы\GoogleDrive лабы\-Лаб2(ГД)\ConsoleApp1\ConsoleA
 H:\ИСРПО\!Лабы\GoogleDrive лабы\-Лаб2(ГД)\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CopyComplete
 H:\ИСРПО\!Лабы\GoogleDrive лабы\-Лаб2(ГД)\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.exe
 H:\ИСРПО\!Лабы\GoogleDrive лабы\-Лаб2(ГД)\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.pdb
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\ConsoleApp1.exe.config
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\ConsoleApp1.exe
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\ConsoleApp1.pdb
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\Newtonsoft.Json.Bson.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\Newtonsoft.Json.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Buffers.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Memory.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Net.Http.Formatting.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Numerics.Vectors.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Threading.Tasks.Extensions.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\Newtonsoft.Json.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\Newtonsoft.Json.Bson.pdb
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\Newtonsoft.Json.Bson.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Buffers.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Memory.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Net.Http.Formatting.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Numerics.Vectors.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\bin\Debug\System.Threading.Tasks.Extensions.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\obj\Debug\ConsoleApp1.csprojAssemblyReference.cache
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CopyComplete
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\obj\Debug\ConsoleApp1.exe
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ConsoleApp\ConsoleApp1\obj\Debug\ConsoleApp1.pdb
