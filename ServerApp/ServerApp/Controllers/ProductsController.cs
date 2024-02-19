@@ -27,13 +27,7 @@ namespace ServerApp.Controllers
             }
             return item;
         }
-
-        public IEnumerable<Product> GetProductsByCategory(string category)
-        {
-            return repository.GetAll().Where(
-                p => string.Equals(p.Category, category, StringComparison.OrdinalIgnoreCase));
-        }
-
+        
         public HttpResponseMessage PostProduct(Product item)
         {
             item = repository.Add(item);
@@ -42,6 +36,12 @@ namespace ServerApp.Controllers
             string uri = Url.Link("DefaultApi", new { id = item.Id });
             response.Headers.Location = new Uri(uri);
             return response;
+        }
+
+        public IEnumerable<Product> GetProductsByCategory(string category)
+        {
+            return repository.GetAll().Where(
+                p => string.Equals(p.Category, category, StringComparison.OrdinalIgnoreCase));
         }
 
         public void PutProduct(int id, Product product)
