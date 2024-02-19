@@ -16,6 +16,7 @@ namespace ServerApp.Models
             Add(new Product() { Name = "Banana", Category = "BBB", Price = 123 });
             Add(new Product() { Name = "Potato", Category = "CCC", Price = 123 });
         }
+
         public Product Add(Product item)
         {
             if (item == null)
