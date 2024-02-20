@@ -9,6 +9,7 @@ namespace ServerApp.Models
     {
         IEnumerable<Reader> GetAll();
         Reader Get(int id);
+        Reader Get(string FIO);
         Reader Add(Reader item);
         void Remove(int id);
         bool Update(Reader item);

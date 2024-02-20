@@ -164,7 +164,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\BookReader.cs" />
+    <Compile Include="Models\BookReaderRepository.cs" />
     <Compile Include="Models\BookRepository.cs" />
+    <Compile Include="Models\IBookReaderRepository.cs" />
     <Compile Include="Models\IBookRepository.cs" />
     <Compile Include="Models\IProductRepository.cs" />
     <Compile Include="Models\IReaderRepository.cs" />
@@ -173,6 +176,7 @@
     <Compile Include="Models\Reader.cs" />
     <Compile Include="Models\ReaderRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPFfunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

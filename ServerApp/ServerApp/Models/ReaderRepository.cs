@@ -13,8 +13,8 @@ namespace ServerApp.Models
         public ReaderRepository()
         {
             Add(new Reader() { FIO = "Белашев Арсений Дмитриевич" });
-            Add(new Reader() { FIO = "Белашев Арсений Дмитриевич" });
-            Add(new Reader() { FIO = "Белашев Арсений Дмитриевич" });
+            Add(new Reader() { FIO = "Котрунцев Глеб Алексеевич" });
+            Add(new Reader() { FIO = "Васильева Анна Александровна" });
         }
 
         public Reader Add(Reader item)
@@ -29,6 +29,11 @@ namespace ServerApp.Models
         public Reader Get(int id)
         {
             return Readers.Find(p => p.Id == id);
+        }
+
+        public Reader Get(string FIO)
+        {
+            return Readers.Find(p => p.FIO == FIO);
         }
 
         public IEnumerable<Reader> GetAll()

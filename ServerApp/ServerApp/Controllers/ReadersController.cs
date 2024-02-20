@@ -28,7 +28,17 @@ namespace ServerApp.Controllers
             }
             return item;
         }
-        
+
+        public Reader GetReader(string FIO)
+        {
+            Reader item = readerRepository.Get(FIO);
+            if (item == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            return item;
+        }
+
         public HttpResponseMessage PostReader(Reader item)
         {
             item = readerRepository.Add(item);

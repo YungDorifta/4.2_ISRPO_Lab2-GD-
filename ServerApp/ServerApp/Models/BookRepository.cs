@@ -7,49 +7,49 @@ namespace ServerApp.Models
 {
     public class BookRepository : IBookRepository
     {
-        private List<Product> Readers = new List<Product>();
+        private List<Book> Books = new List<Book>();
         private int _nextId = 1;
 
-        public ProductRepository()
+        public BookRepository()
         {
-            Add(new Product() { Name = "Tomato", Category = "AAA", Price = 123 });
-            Add(new Product() { Name = "Banana", Category = "BBB", Price = 123 });
-            Add(new Product() { Name = "Potato", Category = "CCC", Price = 123 });
+            Add(new Book() { NameOfBook = "Капитанская дочка", Author = "Александр Пушкин", Pages = 200 });
+            Add(new Book() { NameOfBook = "Капитанская дочка", Author = "Александр Пушкин", Pages = 200 });
+            Add(new Book() { NameOfBook = "Капитанская дочка", Author = "Александр Пушкин", Pages = 200 });
         }
 
-        public Product Add(Product item)
+        public Book Add(Book item)
         {
             if (item == null)
                 throw new ArgumentNullException();
             item.Id = _nextId++;
-            Readers.Add(item);
+            Books.Add(item);
             return item;
         }
 
-        public Product Get(int id)
+        public Book Get(int id)
         {
-            return Readers.Find(p => p.Id == id);
+            return Books.Find(p => p.Id == id);
         }
 
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<Book> GetAll()
         {
-            return Readers;
+            return Books;
         }
 
         public void Remove(int id)
         {
-            Readers.RemoveAll(p => p.Id == id);
+            Books.RemoveAll(p => p.Id == id);
         }
 
-        public bool Update(Product item)
+        public bool Update(Book item)
         {
             if (item == null)
                 throw new ArgumentNullException();
-            int index = Readers.FindIndex(p => p.Id == item.Id);
+            int index = Books.FindIndex(p => p.Id == item.Id);
             if (index == -1)
                 return false;
-            Readers.RemoveAt(index);
-            Readers.Add(item);
+            Books.RemoveAt(index);
+            Books.Add(item);
             return true;
         }
     }

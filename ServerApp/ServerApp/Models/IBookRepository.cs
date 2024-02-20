@@ -8,8 +8,8 @@ namespace ServerApp.Models
     interface IBookRepository
     {
         IEnumerable<Book> GetAll();
-        Product Get(int id);
-        Product Add(Book item);
+        Book Get(int id);
+        Book Add(Book item);
         void Remove(int id);
         bool Update(Book item);
     }
