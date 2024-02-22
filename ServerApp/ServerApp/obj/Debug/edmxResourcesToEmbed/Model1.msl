@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище db_Belashev_ISRPOModelContainer" CdmEntityContainer="db_Belashev_ISRPOEntities1">
+    <EntitySetMapping Name="CarData">
+      <EntityTypeMapping TypeName="db_Belashev_ISRPOModel.CarData">
+        <MappingFragment StoreEntitySet="CarData">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="VolumeOfSales" ColumnName="VolumeOfSales" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

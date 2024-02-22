@@ -181,3 +181,9 @@ H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-�
 H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\obj\Debug\ServerApp.csproj.CopyComplete
 H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\obj\Debug\ServerApp.dll
 H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\obj\Debug\ServerApp.pdb
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\bin\EntityFramework.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\bin\EntityFramework.SqlServer.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\bin\EntityFramework.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\bin\EntityFramework.SqlServer.xml
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\bin\ru\EntityFramework.resources.dll
+H:\ИСРПО\Лабы\2 семестр\Нужно сделать\GoogleDrive\-Лаб2(GD)\ServerApp\ServerApp\obj\Debug\ServerApp.csprojAssemblyReference.cache
