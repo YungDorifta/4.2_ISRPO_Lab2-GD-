@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -9,12 +10,16 @@ namespace ServerApp.Models
     {
         private List<Book> Books = new List<Book>();
         private int _nextId = 1;
+        private static string connectionString = "Server=ADCLG1;Database=db_Belashev_ISRPO;Trusted_Connection=True";
+        private SqlConnection db = new SqlConnection(connectionString);
 
         public BookRepository()
         {
-            Add(new Book() { NameOfBook = "Капитанская дочка", Author = "Александр Пушкин", Pages = 200 });
-            Add(new Book() { NameOfBook = "Капитанская дочка", Author = "Александр Пушкин", Pages = 200 });
-            Add(new Book() { NameOfBook = "Капитанская дочка", Author = "Александр Пушкин", Pages = 200 });
+            db.Open();
+            using (db) {
+                Books = db.
+            }
+            db.Close();
         }
 
         public Book Add(Book item)
