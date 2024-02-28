@@ -191,18 +191,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Library.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Book.cs" />
-    <Compile Include="Models\BookReader.cs" />
-    <Compile Include="Models\BookReaderRepository.cs" />
-    <Compile Include="Models\BookRepository.cs" />
-    <Compile Include="Models\IBookReaderRepository.cs" />
-    <Compile Include="Models\IBookRepository.cs" />
-    <Compile Include="Models\IProductRepository.cs" />
-    <Compile Include="Models\IReaderRepository.cs" />
+    <Compile Include="Models\Repositories\BookReaderRepository.cs" />
+    <Compile Include="Models\Repositories\BookRepository.cs" />
+    <Compile Include="Models\Interfaces\IBookReaderRepository.cs" />
+    <Compile Include="Models\Interfaces\IBookRepository.cs" />
+    <Compile Include="Models\Interfaces\IProductRepository.cs" />
+    <Compile Include="Models\Interfaces\IReaderRepository.cs" />
     <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ProductRepository.cs" />
-    <Compile Include="Models\Reader.cs" />
-    <Compile Include="Models\ReaderRepository.cs" />
+    <Compile Include="Models\Repositories\ProductRepository.cs" />
+    <Compile Include="Models\Repositories\ReaderRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Readers.cs">
       <DependentUpon>Library.tt</DependentUpon>
@@ -278,6 +275,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\DTOs\" />
     <Folder Include="Views\BookReaders\" />
     <Folder Include="Views\Books\" />
     <Folder Include="Views\Readers\" />

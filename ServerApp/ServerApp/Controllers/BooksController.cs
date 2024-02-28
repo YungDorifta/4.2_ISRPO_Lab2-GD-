@@ -1,4 +1,6 @@
 ﻿using ServerApp.Models;
+using ServerApp.Models.Interfaces;
+using ServerApp.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +16,14 @@ namespace ServerApp.Controllers
     {
         static readonly IBookRepository repository = new BookRepository();
 
-        public IEnumerable<Book> GetAllProducts()
+        public IEnumerable<Books> GetAllProducts()
         {
             return repository.GetAll();
         }
 
-        public Book GetBook(int id)
+        public Books GetBook(int id)
         {
-            Book item = repository.Get(id);
+            Books item = repository.Get(id);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -29,24 +31,24 @@ namespace ServerApp.Controllers
             return item;
         }
 
-        public HttpResponseMessage PostBook(Book item)
+        public HttpResponseMessage PostBook(Books item)
         {
             item = repository.Add(item);
-            var response = Request.CreateResponse<Book>(HttpStatusCode.Created, item);
+            var response = Request.CreateResponse<Books>(HttpStatusCode.Created, item);
 
-            string uri = Url.Link("DefaultApi", new { id = item.Id });
+            string uri = Url.Link("DefaultApi", new { id = item.ID });
             response.Headers.Location = new Uri(uri);
             return response;
         }
 
-        public IEnumerable<Book> GetBooksByAuthor(string author)
+        public IEnumerable<Books> GetBooksByAuthor(string author)
         {
             return repository.GetAll().Where(p => string.Equals(p.Author, author, StringComparison.OrdinalIgnoreCase));
         }
 
-        public void PutBook(int id, Book book)
+        public void PutBook(int id, Books book)
         {
-            book.Id = id;
+            book.ID = id;
             if (!repository.Update(book))
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);

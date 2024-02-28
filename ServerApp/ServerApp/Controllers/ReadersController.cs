@@ -1,4 +1,6 @@
 ﻿using ServerApp.Models;
+using ServerApp.Models.Interfaces;
+using ServerApp.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +16,14 @@ namespace ServerApp.Controllers
     {
         static readonly IReaderRepository readerRepository = new ReaderRepository();
 
-        public IEnumerable<Reader> GetAllReaders()
+        public IEnumerable<Readers> GetAllReaders()
         {
             return readerRepository.GetAll();
         }
 
-        public Reader GetReader(int id)
+        public Readers GetReader(int id)
         {
-            Reader item = readerRepository.Get(id);
+            Readers item = readerRepository.Get(id);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -29,9 +31,9 @@ namespace ServerApp.Controllers
             return item;
         }
 
-        public Reader GetReader(string FIO)
+        public Readers GetReader(string FIO)
         {
-            Reader item = readerRepository.Get(FIO);
+            Readers item = readerRepository.Get(FIO);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -39,19 +41,19 @@ namespace ServerApp.Controllers
             return item;
         }
 
-        public HttpResponseMessage PostReader(Reader item)
+        public HttpResponseMessage PostReader(Readers item)
         {
             item = readerRepository.Add(item);
-            var response = Request.CreateResponse<Reader>(HttpStatusCode.Created, item);
+            var response = Request.CreateResponse<Readers>(HttpStatusCode.Created, item);
 
-            string uri = Url.Link("DefaultApi", new { id = item.Id });
+            string uri = Url.Link("DefaultApi", new { id = item.ID });
             response.Headers.Location = new Uri(uri);
             return response;
         }
 
-        public void PutReader(int id, Reader product)
+        public void PutReader(int id, Readers product)
         {
-            product.Id = id;
+            product.ID = id;
             if (!readerRepository.Update(product))
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);

@@ -1,4 +1,6 @@
 ﻿using ServerApp.Models;
+using ServerApp.Models.Interfaces;
+using ServerApp.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +16,14 @@ namespace ServerApp.Controllers
     {
         static readonly IBookReaderRepository repository = new BookReaderRepository();
         
-        public IEnumerable<BookReader> GetAllBookReaders()
+        public IEnumerable<BookReaders> GetAllBookReaders()
         {
             return repository.GetAll();
         }
 
-        public BookReader GetBookReader(int id)
+        public BookReaders GetBookReader(int id)
         {
-            BookReader item = repository.Get(id);
+            BookReaders item = repository.Get(id);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -29,12 +31,12 @@ namespace ServerApp.Controllers
             return item;
         }
 
-        public HttpResponseMessage PostBookReader(BookReader item)
+        public HttpResponseMessage PostBookReader(BookReaders item)
         {
             item = repository.Add(item);
-            var response = Request.CreateResponse<BookReader>(HttpStatusCode.Created, item);
+            var response = Request.CreateResponse<BookReaders>(HttpStatusCode.Created, item);
 
-            string uri = Url.Link("DefaultApi", new { id = item.Id });
+            string uri = Url.Link("DefaultApi", new { id = item.ID });
             response.Headers.Location = new Uri(uri);
             return response;
         }
@@ -44,7 +46,7 @@ namespace ServerApp.Controllers
         /// </summary>
         /// <param name="ReaderID"></param>
         /// <returns></returns>
-        public IEnumerable<BookReader> GetBookReadersByReaderId(int ReaderID)
+        public IEnumerable<BookReaders> GetBookReadersByReaderId(int ReaderID)
         {
             return repository.GetAll().Where(p => int.Equals(p.ReaderID, ReaderID));
         }
@@ -54,7 +56,7 @@ namespace ServerApp.Controllers
         /// </summary>
         /// <param name="BookID"></param>
         /// <returns></returns>
-        public IEnumerable<BookReader> GetBookReadersByBookId(int BookID)
+        public IEnumerable<BookReaders> GetBookReadersByBookId(int BookID)
         {
             return repository.GetAll().Where(p => int.Equals(p.BookID, BookID));
         }
@@ -64,7 +66,7 @@ namespace ServerApp.Controllers
         /// </summary>
         /// <param name="StartDate"></param>
         /// <returns></returns>
-        public IEnumerable<BookReader> GetBookReadersByStartTime(DateTime StartDate)
+        public IEnumerable<BookReaders> GetBookReadersByStartTime(DateTime StartDate)
         {
             return repository.GetAll().Where(p => DateTime.Equals(p.StartDate, StartDate));
         }
@@ -74,14 +76,14 @@ namespace ServerApp.Controllers
         /// </summary>
         /// <param name="EndDate"></param>
         /// <returns></returns>
-        public IEnumerable<BookReader> GetBookReadersByEndTime(DateTime EndDate)
+        public IEnumerable<BookReaders> GetBookReadersByEndTime(DateTime EndDate)
         {
             return repository.GetAll().Where(p => DateTime.Equals(p.EndDate, EndDate));
         }
 
-        public void PutBookReaders(int id, BookReader bookreader)
+        public void PutBookReaders(int id, BookReaders bookreader)
         {
-            bookreader.Id = id;
+            bookreader.ID = id;
             if (!repository.Update(bookreader))
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
