@@ -1,4 +1,5 @@
 ﻿using ServerApp.Models.Interfaces;
+using ServerApp.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,17 @@ namespace ServerApp.Models.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private List<Product> Readers = new List<Product>();
+        private List<ProductDTO> Readers = new List<ProductDTO>();
         private int _nextId = 1;
 
         public ProductRepository()
         {
-            Add(new Product() { Name = "Tomato", Category = "AAA", Price = 123 });
-            Add(new Product() { Name = "Banana", Category = "BBB", Price = 123 });
-            Add(new Product() { Name = "Potato", Category = "CCC", Price = 123 });
+            Add(new ProductDTO() { Name = "Tomato", Category = "AAA", Price = 123 });
+            Add(new ProductDTO() { Name = "Banana", Category = "BBB", Price = 123 });
+            Add(new ProductDTO() { Name = "Potato", Category = "CCC", Price = 123 });
         }
 
-        public Product Add(Product item)
+        public ProductDTO Add(ProductDTO item)
         {
             if (item == null)
                 throw new ArgumentNullException();
@@ -27,12 +28,12 @@ namespace ServerApp.Models.Repositories
             return item;
         }
 
-        public Product Get(int id)
+        public ProductDTO Get(int id)
         {
             return Readers.Find(p => p.Id == id);
         }
 
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<ProductDTO> GetAll()
         {
             return Readers;
         }
@@ -42,7 +43,7 @@ namespace ServerApp.Models.Repositories
             Readers.RemoveAll(p => p.Id == id);
         }
 
-        public bool Update(Product item)
+        public bool Update(ProductDTO item)
         {
             if (item == null)
                 throw new ArgumentNullException();

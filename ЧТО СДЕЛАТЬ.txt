@@ -5,8 +5,13 @@
 	Сделать так, чтобы нельзя было добавить в промежуточную таблицу несуществующие id книг и читателей
 
 
-Что делать сейчас : DTO (на сервере и на клиенте) Сервер: DTO, BookReaderRepository, Контроллеры 
-Потом реализовать вывод данных с функций в элементы окна
+Что делать сейчас : 
+BooksController допеределать для взаимодействия данных
+
+BookReaderRepository переделать в соответствии, 
+Переделать контроллеры для возвращения DTO в соответствии с сайтом MSLearn,
+добавить связь таблиц в соответствии с MSLearn,
+Потом реализовать вывод данных с функций в элементы окна WPF.
 
 
 ТАБЛИЦЫ (сделаны на SQLserver):
@@ -19,5 +24,10 @@ id, ФИО
 
 Общее:
 id книги, id читателя, дата аренды и дата возврата
+
+MSLearn DTO:
+https://learn.microsoft.com/ru-ru/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-4
+MSLearn Связи:
+https://learn.microsoft.com/ru-ru/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-5
 
 

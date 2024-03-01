@@ -16,7 +16,19 @@ namespace ServerApp.Models.Repositories
         /// </summary>
         public BookReaderRepository()
         {
-            //Reload();
+            Reload();
+        }
+
+        /// <summary>
+        /// Перезагрузка репозитория
+        /// </summary>
+        public void Reload()
+        {
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
+            {
+                bookReadersRepository = db.BookReaders.SqlQuery("SELECT * FROM [db_Belashev_ISRPO].[dbo].[BookReaders]").ToList();
+                _nextId = bookReadersRepository[bookReadersRepository.Count - 1].ID + 1;
+            }
         }
 
         public BookReaders Add(BookReaders item)

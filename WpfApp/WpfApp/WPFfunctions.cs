@@ -1,10 +1,10 @@
-﻿using ServerApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WpfApp.DTOs;
 
 namespace WpfApp
 {
@@ -14,72 +14,103 @@ namespace WpfApp
 
         // Для смешанной таблицы
 
-        // Для книг (ПЕРЕДЕЛАТЬ ВСЕ)
+        // Для книг 
         /// <summary>
         /// Получение всех записей в таблице
         /// </summary>
-        public static void GetAllBooks()
+        public static string GetAllBooks()
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(stringBaseAddress);
-
-
-
+                
                 //HTTP GET
-                Task<HttpResponseMessage> responseTask = client.GetAsync("books");
+                Task<HttpResponseMessage> responseTask = client.GetAsync("Books");
                 responseTask.Wait();
 
                 var GetResult = responseTask.Result;
+
+                string ResultBooksMessage = "";
                 if (GetResult.IsSuccessStatusCode)
                 {
 
-                    var readTask = GetResult.Content.ReadAsAsync<Book[]>();
+                    var readTask = GetResult.Content.ReadAsAsync<BooksDTO[]>();
                     readTask.Wait();
 
-                    var products = readTask.Result;
-
-                    foreach (var product in products)
+                    var books = readTask.Result;
+                    foreach (var book in books)
                     {
-                        Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name,
-                        product.Category, product.Price);
+                        Console.WriteLine("{0} {1} {2} {3}", book.ID, book.BookName,
+                        book.Author, book.Pages);
+                        ResultBooksMessage += book.ID + "\t" + book.BookName.TrimEnd(' ') + "\t" + book.Author.TrimEnd(' ') + "\t" + book.Pages + "\n";
                     }
                 }
                 Console.ReadLine();
+
+                return ResultBooksMessage;
+            }
+        }
+
+        // (переделать для DTO и т д)
+        //
+        /// <summary>
+        /// Получить информацию о продукте с ID = 2
+        /// </summary>
+        public static void GetInfoBook()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(stringBaseAddress);
+
+                //HTTP GET
+                Task<HttpResponseMessage> responseTask = client.GetAsync("Books/2");
+                responseTask.Wait();
+
+                HttpResponseMessage GetResult = responseTask.Result;
+                if (GetResult.IsSuccessStatusCode)
+                {
+
+                    Task<ProductDTO> readTask = GetResult.Content.ReadAsAsync<ProductDTO>();
+                    readTask.Wait();
+
+                    ProductDTO product = readTask.Result;
+
+                    Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name,
+                    product.Category, product.Price);
+                }
             }
         }
 
         /// <summary>
         /// Добавление одной записи в таблицу
         /// </summary>
-        public static void AddBook()
+        public static void AddBook(string BookName, string Author, int Pages)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(stringBaseAddress);
 
                 //HTTP POST --------------------------------------
-                var student = new Product()
+                var book = new BooksDTO()
                 {
-                    Name = "Сarrot",
-                    Category = "DDD",
-                    Price = 123
+                    BookName = BookName,
+                    Author = Author,
+                    Pages = Pages
                 };
 
-                var postTask = client.PostAsJsonAsync<Product>("products", student);
+                var postTask = client.PostAsJsonAsync<BooksDTO>("Books", book);
                 postTask.Wait();
 
                 var PostResult = postTask.Result;
                 if (PostResult.IsSuccessStatusCode)
                 {
 
-                    var readTask = PostResult.Content.ReadAsAsync<Product>();
+                    var readTask = PostResult.Content.ReadAsAsync<BooksDTO>();
                     readTask.Wait();
 
-                    var insertedProduct = readTask.Result;
+                    var insertedBook = readTask.Result;
 
-                    Console.WriteLine("Product {0} inserted with id: {1}",
-                                                           insertedProduct.Name, insertedProduct.Id);
+                    Console.WriteLine("Book {0} inserted with id: {1}", insertedBook.BookName, insertedBook.ID);
                 }
                 else
                 {
@@ -109,34 +140,6 @@ namespace WpfApp
         }
 
         /// <summary>
-        /// Получить информацию о продукте с ID = 2
-        /// </summary>
-        public static void GetInfoBook()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(stringBaseAddress);
-
-                //HTTP GET
-                Task<HttpResponseMessage> responseTask = client.GetAsync("products/2");
-                responseTask.Wait();
-
-                HttpResponseMessage GetResult = responseTask.Result;
-                if (GetResult.IsSuccessStatusCode)
-                {
-
-                    Task<Product> readTask = GetResult.Content.ReadAsAsync<Product>();
-                    readTask.Wait();
-
-                    Product product = readTask.Result;
-
-                    Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name,
-                    product.Category, product.Price);
-                }
-            }
-        }
-
-        /// <summary>
         /// Получение информации о продуктах с заданной категорией
         /// </summary>
         public static void GetInfoBooksWithAuthor()
@@ -153,10 +156,10 @@ namespace WpfApp
                 if (GetResult.IsSuccessStatusCode)
                 {
 
-                    Task<Product[]> readTask = GetResult.Content.ReadAsAsync<Product[]>();
+                    Task<ProductDTO[]> readTask = GetResult.Content.ReadAsAsync<ProductDTO[]>();
                     readTask.Wait();
 
-                    Product[] products = readTask.Result;
+                    ProductDTO[] products = readTask.Result;
 
                     foreach (var product in products)
                     {
@@ -177,7 +180,7 @@ namespace WpfApp
             {
                 client.BaseAddress = new Uri(stringBaseAddress);
 
-                Product product = new Product()
+                ProductDTO product = new ProductDTO()
                 {
                     Name = "Сarrot",
                     Category = "DDD",
@@ -190,10 +193,10 @@ namespace WpfApp
                 HttpResponseMessage resultTask = responseTask.Result;
                 if (resultTask.IsSuccessStatusCode)
                 {
-                    Task<Product> readResult = resultTask.Content.ReadAsAsync<Product>();
+                    Task<ProductDTO> readResult = resultTask.Content.ReadAsAsync<ProductDTO>();
                     readResult.Wait();
 
-                    Product result = readResult.Result;
+                    ProductDTO result = readResult.Result;
                     Console.WriteLine("{0} {1} {2} {3}",
                                         result.Id, result.Name, result.Category, product.Price);
 
@@ -224,7 +227,7 @@ namespace WpfApp
                 if (GetResult.IsSuccessStatusCode)
                 {
 
-                    var readTask = GetResult.Content.ReadAsAsync<Product[]>();
+                    var readTask = GetResult.Content.ReadAsAsync<ProductDTO[]>();
                     readTask.Wait();
 
                     var products = readTask.Result;
@@ -249,26 +252,26 @@ namespace WpfApp
                 client.BaseAddress = new Uri(stringBaseAddress);
 
                 //HTTP POST --------------------------------------
-                var student = new Product()
+                var student = new ProductDTO()
                 {
                     Name = "Сarrot",
                     Category = "DDD",
                     Price = 123
                 };
 
-                var postTask = client.PostAsJsonAsync<Product>("products", student);
+                var postTask = client.PostAsJsonAsync<ProductDTO>("products", student);
                 postTask.Wait();
 
                 var PostResult = postTask.Result;
                 if (PostResult.IsSuccessStatusCode)
                 {
 
-                    var readTask = PostResult.Content.ReadAsAsync<Product>();
+                    var readTask = PostResult.Content.ReadAsAsync<ProductDTO>();
                     readTask.Wait();
 
                     var insertedProduct = readTask.Result;
 
-                    Console.WriteLine("Product {0} inserted with id: {1}",
+                    Console.WriteLine("ProductDTO {0} inserted with id: {1}",
                                                            insertedProduct.Name, insertedProduct.Id);
                 }
                 else
@@ -315,10 +318,10 @@ namespace WpfApp
                 if (GetResult.IsSuccessStatusCode)
                 {
 
-                    Task<Product> readTask = GetResult.Content.ReadAsAsync<Product>();
+                    Task<ProductDTO> readTask = GetResult.Content.ReadAsAsync<ProductDTO>();
                     readTask.Wait();
 
-                    Product product = readTask.Result;
+                    ProductDTO product = readTask.Result;
 
                     Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name,
                     product.Category, product.Price);
@@ -343,10 +346,10 @@ namespace WpfApp
                 if (GetResult.IsSuccessStatusCode)
                 {
 
-                    Task<Product[]> readTask = GetResult.Content.ReadAsAsync<Product[]>();
+                    Task<ProductDTO[]> readTask = GetResult.Content.ReadAsAsync<ProductDTO[]>();
                     readTask.Wait();
 
-                    Product[] products = readTask.Result;
+                    ProductDTO[] products = readTask.Result;
 
                     foreach (var product in products)
                     {
@@ -367,7 +370,7 @@ namespace WpfApp
             {
                 client.BaseAddress = new Uri(stringBaseAddress);
 
-                Product product = new Product()
+                ProductDTO product = new ProductDTO()
                 {
                     Name = "Сarrot",
                     Category = "DDD",
@@ -380,10 +383,10 @@ namespace WpfApp
                 HttpResponseMessage resultTask = responseTask.Result;
                 if (resultTask.IsSuccessStatusCode)
                 {
-                    Task<Product> readResult = resultTask.Content.ReadAsAsync<Product>();
+                    Task<ProductDTO> readResult = resultTask.Content.ReadAsAsync<ProductDTO>();
                     readResult.Wait();
 
-                    Product result = readResult.Result;
+                    ProductDTO result = readResult.Result;
                     Console.WriteLine("{0} {1} {2} {3}",
                                         result.Id, result.Name, result.Category, product.Price);
 

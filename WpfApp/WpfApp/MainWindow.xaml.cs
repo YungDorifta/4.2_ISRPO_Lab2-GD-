@@ -13,8 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ServerApp;
-using ServerApp.Models;
 
 namespace WpfApp
 {
@@ -24,40 +22,17 @@ namespace WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public void GetAllProducts()
-        {
-            ServerApp.WPFfunctions.GetAllProducts();
-        }
 
         public MainWindow()
         {
             InitializeComponent();
+            
+        }
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:50237/api/");
-
-                //HTTP GET
-                var responseTask = client.GetAsync("products");
-                responseTask.Wait();
-
-                var GetResult = responseTask.Result;
-                if (GetResult.IsSuccessStatusCode)
-                {
-
-                    var readTask = GetResult.Content.ReadAsAsync<Product[]>();
-                    readTask.Wait();
-
-                    var products = readTask.Result;
-
-                    foreach (var product in products)
-                    {
-                        Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name,
-                        product.Category, product.Price);
-                    }
-                }
-            }
-
+        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
+        {
+            TB.Text = "Not Loaded. Fuck.";
+            TB.Text = WPFfunctions.GetAllBooks();
         }
     }
 }

@@ -191,13 +191,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Library.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DTOs\BookReadersDTO.cs" />
+    <Compile Include="Models\DTOs\BooksDTO.cs" />
+    <Compile Include="Models\DTOs\ReadersDTO.cs" />
     <Compile Include="Models\Repositories\BookReaderRepository.cs" />
     <Compile Include="Models\Repositories\BookRepository.cs" />
     <Compile Include="Models\Interfaces\IBookReaderRepository.cs" />
     <Compile Include="Models\Interfaces\IBookRepository.cs" />
     <Compile Include="Models\Interfaces\IProductRepository.cs" />
     <Compile Include="Models\Interfaces\IReaderRepository.cs" />
-    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\DTOs\ProductDTO.cs" />
     <Compile Include="Models\Repositories\ProductRepository.cs" />
     <Compile Include="Models\Repositories\ReaderRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -275,7 +278,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\DTOs\" />
     <Folder Include="Views\BookReaders\" />
     <Folder Include="Views\Books\" />
     <Folder Include="Views\Readers\" />
