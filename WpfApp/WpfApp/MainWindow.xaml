@@ -7,7 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock x:Name="TB" HorizontalAlignment="Left" Height="300" Width="500" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Loaded="TextBlock_Loaded"/>
+        <DockPanel HorizontalAlignment="Left" Height="25" LastChildFill="False" VerticalAlignment="Top" Width="792">
+            
+        </DockPanel>
+        <TextBlock x:Name="TB" HorizontalAlignment="Left" Height="379" Width="772" Margin="10,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Loaded="TextBlock_Loaded"><Run Text="TextBlock"/>
+
+        </TextBlock>
+
 
     </Grid>
 </Window>

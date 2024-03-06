@@ -15,7 +15,7 @@ using System.Web.Http.Description;
 using System.Web.Mvc;
 
 
-// Переделать на вывод DTO!!!
+// ГОТОВО!!! для string
 
 namespace ServerApp.Controllers
 {
@@ -41,10 +41,9 @@ namespace ServerApp.Controllers
                 return books;
             }
         }
-
-
+        
         /// <summary>
-        /// Вернуть книгу с заданным id
+        /// Вернуть книгу по id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -79,38 +78,80 @@ namespace ServerApp.Controllers
             */
         }
 
-
-
-
-
-        //
-        public HttpResponseMessage PostBook(Books item)
+        /// <summary>
+        /// Добавить книгу
+        /// </summary>
+        /// <param name="bookDTO"></param>
+        /// <returns></returns>
+        public HttpResponseMessage PostBook(BooksDTO bookDTO)
         {
-            item = repository.Add(item);
-            var response = Request.CreateResponse<Books>(HttpStatusCode.Created, item);
-
-            string uri = Url.Link("DefaultApi", new { id = item.ID });
-            response.Headers.Location = new Uri(uri);
-            return response;
-        }
-        //
-        public IEnumerable<Books> GetBooksByAuthor(string author)
-        {
-            return repository.GetAll().Where(p => string.Equals(p.Author, author, StringComparison.OrdinalIgnoreCase));
-        }
-        //
-        public void PutBook(int id, Books book)
-        {
-            book.ID = id;
-            if (!repository.Update(book))
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                Books book = new Books { Bookname = bookDTO.BookName, Author = bookDTO.Author, Pages = bookDTO.Pages };
+                db.Books.Add(book);
+                db.SaveChanges();
+
+                var response = Request.CreateResponse<Books>(HttpStatusCode.Created, book);
+                string uri = Url.Link("DefaultApi", new { id = bookDTO.ID });
+                response.Headers.Location = new Uri(uri);
+                return response;
             }
         }
-        //
+
+        /// <summary>
+        /// Удалить книгу по id
+        /// </summary>
+        /// <param name="id"></param>
         public void DeleteBook(int id)
         {
-            repository.Remove(id);
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
+            {
+                var book = db.Books.Where(b => b.ID == id).FirstOrDefault();
+                db.Books.Remove(book);
+                db.SaveChanges();
+            };
+        }
+
+        /// <summary>
+        /// Получить книги по автору
+        /// </summary>
+        /// <param name="authorParam">Автор</param>
+        /// <returns></returns>
+        public IEnumerable<BooksDTO> GetBooksByAuthor(string authorParam)
+        {
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
+            {
+                List<Books> books = db.Books.Where(b => b.Author.Contains(authorParam)).ToList();
+
+                List<BooksDTO> booksDTO = new List<BooksDTO>();
+                foreach (var book in books) booksDTO.Add(new BooksDTO { ID = book.ID, BookName = book.Bookname, Author = book.Author, Pages = book.Pages });
+
+                return booksDTO;
+            }
+            //return repository.GetAll().Where(p => string.Equals(p.Author, author, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Изменить книгу по указанному id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="bookDTO"></param>
+        public void PutBook(int id, BooksDTO bookDTO)
+        {
+            bookDTO.ID = id;
+            Books book = new Books {
+                ID = bookDTO.ID,
+                Bookname = bookDTO.BookName,
+                Author = bookDTO.Author,
+                Pages = bookDTO.Pages
+            };
+
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
+            {
+                db.Books.Remove(db.Books.Where(b => b.ID == id).FirstOrDefault());
+                db.Books.Add(book);
+                db.SaveChanges();
+            }
         }
     }
 }

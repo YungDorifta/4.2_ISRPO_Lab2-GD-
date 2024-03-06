@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace WpfApp
 {
 
@@ -33,6 +34,17 @@ namespace WpfApp
         {
             TB.Text = "Not Loaded. Fuck.";
             TB.Text = WPFfunctions.GetAllBooks();
+
+            /*
+                TB.Text = WPFfunctions.AddBook("Новая книга", "Новый Автор", 147);
+                TB.Text = "\n";
+                WPFfunctions.DeleteBook(9);
+                BooksDTO book = new BooksDTO { ID=12, Author="Новый Автор", BookName="Новая книга", Pages=150};
+                WPFfunctions.UpdateInfoBook(book);
+                TB.Text += "\n";
+                TB.Text += WPFfunctions.GetAllBooks();
+                TB.Text = WPFfunctions.GetInfoBooksWithAuthor("А. Пушкин");
+            */
         }
     }
 }
