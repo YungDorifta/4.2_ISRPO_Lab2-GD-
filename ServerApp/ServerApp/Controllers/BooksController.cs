@@ -21,7 +21,7 @@ namespace ServerApp.Controllers
 {
     public class BooksController : ApiController
     {
-        static readonly IBookRepository repository = new BookRepository();
+        //static readonly IBookRepository repository = new BookRepository();
 
         /// <summary>
         /// Передать DTO всех книг
