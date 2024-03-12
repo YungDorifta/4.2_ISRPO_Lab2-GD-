@@ -17,7 +17,8 @@ namespace ServerApp.Controllers
 {
     public class ReadersController : ApiController
     {
-        //static readonly IReaderRepository readerRepository = new ReaderRepository();
+        /*
+        static readonly IReaderRepository readerRepository = new ReaderRepository();
 
         /// <summary>
         /// Получить DTO всех читателей
@@ -101,5 +102,6 @@ namespace ServerApp.Controllers
         {
             readerRepository.Remove(id);
         }
+        */
     }
 }

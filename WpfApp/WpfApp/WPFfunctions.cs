@@ -16,8 +16,10 @@ namespace WpfApp
         /// <summary>
         /// Получение всех записей в таблице
         /// </summary>
-        public static string GetAllBooks()
+        public static List<BooksDTO> GetAllBooks()
         {
+            List<BooksDTO> LB = new List<BooksDTO>();
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(stringBaseAddress);
@@ -39,12 +41,12 @@ namespace WpfApp
                     foreach (var book in books)
                     {
                         //Console.WriteLine("{0} {1} {2} {3}", book.ID, book.BookName, book.Author, book.Pages);
-                        ResultBooksMessage += book.ID + "\t" + book.BookName.TrimEnd(' ') + "\t" + book.Author.TrimEnd(' ') + "\t" + book.Pages + "\n";
+                        //ResultBooksMessage += book.ID + "\t" + book.BookName.TrimEnd(' ') + "\t" + book.Author.TrimEnd(' ') + "\t" + book.Pages + "\n";
+                        LB.Add(book);
                     }
                 }
                 //Console.ReadLine();
-
-                return ResultBooksMessage;
+                return LB;
             }
         }
         

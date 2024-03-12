@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp.DTOs;
 
 
 namespace WpfApp
@@ -30,21 +31,75 @@ namespace WpfApp
             
         }
 
-        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Просмотр книг
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SeeAllBooks(object sender, RoutedEventArgs e)
         {
-            TB.Text = "Not Loaded. Fuck.";
-            TB.Text = WPFfunctions.GetAllBooks();
+            if (ElemTable.IsLoaded)
+            {
+                List<BooksDTO> books = WPFfunctions.GetAllBooks();
+                ElemTable.ItemsSource = books;
+            }
+        }
 
-            /*
-                TB.Text = WPFfunctions.AddBook("Новая книга", "Новый Автор", 147);
-                TB.Text = "\n";
-                WPFfunctions.DeleteBook(9);
-                BooksDTO book = new BooksDTO { ID=12, Author="Новый Автор", BookName="Новая книга", Pages=150};
-                WPFfunctions.UpdateInfoBook(book);
-                TB.Text += "\n";
-                TB.Text += WPFfunctions.GetAllBooks();
-                TB.Text = WPFfunctions.GetInfoBooksWithAuthor("А. Пушкин");
-            */
+        //Добавить книгу
+        private void AddBook(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //Удалить книгу
+        private void DeleteBook(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //Изменить книгу
+        private void UpdateBook(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
+        /// <summary>
+        /// Загрузка таблицы по умолчанию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ElemTable_Loaded(object sender, RoutedEventArgs e)
+        {
+            List<BooksDTO> books = WPFfunctions.GetAllBooks();
+            ElemTable.ItemsSource = books;
+        }
+
+        /// <summary>
+        /// Загрузка списков книг по умолчанию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshBookList(object sender, RoutedEventArgs e)
+        {
+            List<BooksDTO> books = WPFfunctions.GetAllBooks();
+            foreach (BooksDTO book in books)
+            {
+                (sender as ListBox).Items.Add(book.BookName);
+            }
+        }
+
+        private void CheckIfNum(object sender, KeyEventArgs e)
+        {
+            int val;
+            string str = PageBox.Text;
+            if (Int32.TryParse(str, out val)){
+                return;
+            } 
+            if (e.Key == Key.Back)
+            {
+                return;
+            }
+            else e.Handled = true; // отклоняем ввод
         }
     }
 }
