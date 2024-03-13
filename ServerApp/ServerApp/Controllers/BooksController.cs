@@ -132,6 +132,22 @@ namespace ServerApp.Controllers
         }
 
         /// <summary>
+        /// Получить книги по названию
+        /// </summary>
+        /// <param name="authorParam">Автор</param>
+        /// <returns></returns>
+        public BooksDTO GetBooksByBookname(string booknameParam)
+        {
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
+            {
+                List<Books> books = db.Books.Where(b => b.Bookname == booknameParam).ToList();
+                Books book = books[0];
+                BooksDTO booksDTO = new BooksDTO { ID = book.ID, BookName = book.Bookname, Author = book.Author, Pages = book.Pages };
+                return booksDTO;
+            }
+        }
+
+        /// <summary>
         /// Изменить книгу по указанному id
         /// </summary>
         /// <param name="id"></param>

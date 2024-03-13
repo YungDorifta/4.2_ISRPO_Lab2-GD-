@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
-        Title="Библиотека: книги" Height="606.683" Width="800">
+        Title="Библиотека: книги" Height="606.683" Width="829" MinWidth="829">
     <Grid x:Name="BooksGrid">
         <Menu HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="792">
             <MenuItem Height="25" Width="46" Header="Книги" Click="SeeAllBooks"/>
@@ -13,33 +13,31 @@
             <MenuItem Height="25" Width="98" Header="Общая таблица" Click="SeeAllBooks"/>
         </Menu>
 
-        <DataGrid x:Name="ElemTable" IsReadOnly="True" AutoGenerateColumns="True" HorizontalAlignment="Left" Height="277" Margin="10,30,0,0" VerticalAlignment="Top" Width="772" Loaded="ElemTable_Loaded">
+        <DataGrid x:Name="ElemTable" IsReadOnly="True" AutoGenerateColumns="True" Margin="10,30,10,269" Loaded="ElemTableLoaded" SelectionChanged="ElemTable_SelectionChanged">
             <DataGrid.Resources>
 
             </DataGrid.Resources>
         </DataGrid>
 
-        <GroupBox Header="Добавление книги" HorizontalAlignment="Left" Height="247" Margin="10,319,0,0" VerticalAlignment="Top" Width="253">
+        <GroupBox Header="Добавление книги" HorizontalAlignment="Left" Margin="10,0,0,10" Width="290" Height="247" VerticalAlignment="Bottom">
             <StackPanel>
-                <TextBox Height="143" Margin="0,5,0,0" TextWrapping="Wrap" Text="Название" VerticalAlignment="Top"/>
-                <TextBox Height="20" Margin="0,5,0,0" TextWrapping="Wrap" Text="Автор" VerticalAlignment="Top"/>
-                <TextBox x:Name="PageBox" Height="22" Margin="0,5,0,0" TextWrapping="Wrap" Text="Кол-во страниц" VerticalAlignment="Top" KeyDown="CheckIfNum"/>
+                <TextBox x:Name="AddBookname" Height="141" Margin="0,5,0,0" TextWrapping="Wrap" Text="Название" VerticalAlignment="Top"/>
+                <TextBox x:Name="AddAuthor" Height="20" Margin="0,5,0,0" TextWrapping="Wrap" Text="Автор" VerticalAlignment="Top"/>
+                <TextBox x:Name="AddPage" Height="22" Margin="0,5,0,0" TextWrapping="Wrap" Text="Кол-во страниц" VerticalAlignment="Top" KeyDown="CheckIfNum"/>
                 <Button Margin="0,5,0,0" Content="Добавить" Click="AddBook" Height="20" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Удаление книги" HorizontalAlignment="Left" Height="247" Margin="268,319,0,0" VerticalAlignment="Top" Width="213">
+        <GroupBox Header="Удаление книги" HorizontalAlignment="Center"  Width="212" Margin="290,10" Height="247" VerticalAlignment="Bottom">
             <StackPanel>
-                <ListBox Margin="0,5" VerticalAlignment="Top" Height="195" Loaded="RefreshBookList"/>
-                <Button Content="Удалить" Click="DeleteBook"/>
+                <Button Content="Удалить выбранную книгу" Click="DeleteBook" Height="224"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Изменение книги" HorizontalAlignment="Left" Height="247" Margin="486,319,0,0" VerticalAlignment="Top" Width="296">
+        <GroupBox Header="Изменение книги" Margin="0,0,10,10" HorizontalAlignment="Right" Width="289" Height="247" VerticalAlignment="Bottom">
             <StackPanel>
-                <ListBox Margin="0,5" VerticalAlignment="Top" Height="123" Loaded="RefreshBookList"/>
-                <TextBox Height="19" TextWrapping="Wrap" Text="Название" VerticalAlignment="Top"/>
-                <TextBox Height="19" Margin="0,5,0,0" TextWrapping="Wrap" Text="Автор" VerticalAlignment="Top"/>
-                <TextBox Height="19" Margin="0,5,0,0" TextWrapping="Wrap" Text="Кол-во страниц" VerticalAlignment="Top"/>
-                <Button Content="Изменить" Margin="0,5,0,0" Click="UpdateBook"/>
+                <TextBox x:Name="UpBookname" Height="19" TextWrapping="Wrap" Text="Название" VerticalAlignment="Top"/>
+                <TextBox x:Name="UpAuthor" Height="19" Margin="0,5,0,0" TextWrapping="Wrap" Text="Автор" VerticalAlignment="Top"/>
+                <TextBox x:Name="UpPages" Height="19" Margin="0,5,0,0" TextWrapping="Wrap" Text="Кол-во страниц" VerticalAlignment="Top"/>
+                <Button Content="Изменить выбранную книгу" Margin="0,5,0,0" Click="UpdateBook" Height="153"/>
             </StackPanel>
         </GroupBox>
     </Grid>

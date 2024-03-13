@@ -24,13 +24,10 @@ namespace WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        public MainWindow()
-        {
-            InitializeComponent();
-            
-        }
-
+        //выбранный элемент
+        private int SelectedItemID = -1;
+        
+        //для книг
         /// <summary>
         /// Просмотр книг
         /// </summary>
@@ -45,16 +42,37 @@ namespace WpfApp
             }
         }
 
-        //Добавить книгу
+        /// <summary>
+        /// Добавить книгу
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddBook(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                int argPages;
+                Int32.TryParse(AddPage.Text.ToString(), out argPages);
+                WPFfunctions.AddBook(AddBookname.Text, AddAuthor.Text, argPages);
+                RefreshElemTableBooks();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        //Удалить книгу
+        /// <summary>
+        /// Удалить книгу
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteBook(object sender, RoutedEventArgs e)
         {
-
+            BooksDTO book = WPFfunctions.GetInfoBook(SelectedItemID);
+            int ID = book.ID;
+            WPFfunctions.DeleteBook(ID);
+            RefreshElemTableBooks();
         }
 
         //Изменить книгу
@@ -64,35 +82,36 @@ namespace WpfApp
         }
         
         /// <summary>
-        /// Загрузка таблицы по умолчанию
+        /// Изменение выбранного элемента в таблице
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ElemTable_Loaded(object sender, RoutedEventArgs e)
+        private void ElemTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //SelectedItemID = ElemTable.SelectedItem.ID;
+        }
+
+        //вспомогательные методы
+        /// <summary>
+        /// Обновить таблицу (книги)
+        /// </summary>
+        private void RefreshElemTableBooks()
         {
             List<BooksDTO> books = WPFfunctions.GetAllBooks();
             ElemTable.ItemsSource = books;
         }
 
+
         /// <summary>
-        /// Загрузка списков книг по умолчанию
+        /// Проверка на ввод числа
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RefreshBookList(object sender, RoutedEventArgs e)
-        {
-            List<BooksDTO> books = WPFfunctions.GetAllBooks();
-            foreach (BooksDTO book in books)
-            {
-                (sender as ListBox).Items.Add(book.BookName);
-            }
-        }
-
         private void CheckIfNum(object sender, KeyEventArgs e)
         {
-            int val;
-            string str = PageBox.Text;
-            if (Int32.TryParse(str, out val)){
+            
+            string str = AddPage.Text;
+            if (e.Key <= Key.D9 && e.Key >= Key.D0){
                 return;
             } 
             if (e.Key == Key.Back)
@@ -101,5 +120,41 @@ namespace WpfApp
             }
             else e.Handled = true; // отклоняем ввод
         }
+
+
+
+        //загрузка настроек по умолчанию
+        public MainWindow()
+        {
+            InitializeComponent();
+
+        }
+
+        /// <summary>
+        /// Загрузка таблицы по умолчанию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ElemTableLoaded(object sender, RoutedEventArgs e)
+        {
+            RefreshElemTableBooks();
+        }
+
+        /// <summary>
+        /// Загрузка списков книг по умолчанию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BookListLoaded(object sender, RoutedEventArgs e)
+        {
+            (sender as ListBox).Items.Clear();
+            List<BooksDTO> books = WPFfunctions.GetAllBooks();
+            foreach (BooksDTO book in books)
+            {
+                (sender as ListBox).Items.Add(book.BookName);
+            }
+        }
+
+        
     }
 }

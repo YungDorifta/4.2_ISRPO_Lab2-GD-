@@ -30,7 +30,7 @@ namespace WpfApp
 
                 var GetResult = responseTask.Result;
 
-                string ResultBooksMessage = "";
+                //string ResultBooksMessage = "";
                 if (GetResult.IsSuccessStatusCode)
                 {
 
@@ -51,9 +51,9 @@ namespace WpfApp
         }
         
         /// <summary>
-        /// Получить информацию о продукте с ID = 2
+        /// Получить информацию о продукте с ID
         /// </summary>
-        public static string GetInfoBook(int id)
+        public static BooksDTO GetInfoBook(int id)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -65,7 +65,6 @@ namespace WpfApp
 
                 HttpResponseMessage GetResult = responseTask.Result;
 
-                string ResultBooksMessage = "";
                 if (GetResult.IsSuccessStatusCode)
                 {
 
@@ -73,10 +72,9 @@ namespace WpfApp
                     readTask.Wait();
 
                     BooksDTO book = readTask.Result;
-                    ResultBooksMessage = book.ID + "\t" + book.BookName.TrimEnd(' ') + "\t" + book.Author.TrimEnd(' ') + "\t" + book.Pages + "\n";
-                    //Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name, product.Category, product.Price);
+                    return book;
                 }
-                return ResultBooksMessage;
+                else throw new Exception("Книга с выбранным ID не найдена!");
             }
         }
         
@@ -175,7 +173,34 @@ namespace WpfApp
             }
 
         }
-        
+
+        /// <summary>
+        /// Получение книги по названию
+        /// </summary>
+        public static BooksDTO GetInfoBooksWithBookname(string booknameParam)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(stringBaseAddress);
+
+                //HTTP GET
+                Task<HttpResponseMessage> responseTask = client.GetAsync("Books?booknameParam=" + booknameParam);
+                responseTask.Wait();
+
+                HttpResponseMessage GetResult = responseTask.Result;
+
+                BooksDTO book = null;
+                if (GetResult.IsSuccessStatusCode)
+                {
+
+                    Task<BooksDTO> readTask = GetResult.Content.ReadAsAsync<BooksDTO>();
+                    readTask.Wait();
+                    book = readTask.Result;
+                }
+                return book;
+            }
+        }
+
         /// <summary>
         /// Обновление информации о продукте с ID = 2
         /// </summary>
