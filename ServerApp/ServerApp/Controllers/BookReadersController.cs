@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 
+//переделать под DTO
+
 namespace ServerApp.Controllers
 {
     public class BookReadersController : ApiController

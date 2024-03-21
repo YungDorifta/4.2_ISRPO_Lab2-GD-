@@ -11,75 +11,143 @@ namespace WpfApp
     public class WPFfunctions
     {
         private static string stringBaseAddress = "http://localhost:50237/api/";
-        
-        // Для книг (ГОТОВО для string) 
+
+        //общее: переделать повторяющийся код для выбора типа объекта
         /// <summary>
         /// Получение всех записей в таблице
         /// </summary>
-        public static List<BooksDTO> GetAllBooks()
+        public static List<Object> GetAll(Object typeObject)
         {
-            List<BooksDTO> LB = new List<BooksDTO>();
+            List<Object> LB = new List<Object>();
 
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(stringBaseAddress);
-                
+
                 //HTTP GET
-                Task<HttpResponseMessage> responseTask = client.GetAsync("Books");
-                responseTask.Wait();
+                Task<HttpResponseMessage> responseTask = null;
+                if (typeObject is BooksDTO) responseTask = client.GetAsync("Books");
+                else if (typeObject is ReadersDTO) responseTask = client.GetAsync("Readers");
+                else if (typeObject is BookReadersDTO) responseTask = client.GetAsync("BookReaders");
 
-                var GetResult = responseTask.Result;
-
-                //string ResultBooksMessage = "";
-                if (GetResult.IsSuccessStatusCode)
+                if (responseTask != null)
                 {
+                    responseTask.Wait();
+                    var GetResult = responseTask.Result;
 
-                    var readTask = GetResult.Content.ReadAsAsync<BooksDTO[]>();
-                    readTask.Wait();
-
-                    var books = readTask.Result;
-                    foreach (var book in books)
+                    //Изъятие массива данных
+                    if (GetResult.IsSuccessStatusCode)
                     {
-                        //Console.WriteLine("{0} {1} {2} {3}", book.ID, book.BookName, book.Author, book.Pages);
-                        //ResultBooksMessage += book.ID + "\t" + book.BookName.TrimEnd(' ') + "\t" + book.Author.TrimEnd(' ') + "\t" + book.Pages + "\n";
-                        LB.Add(book);
+                        if (typeObject is BooksDTO)
+                        {
+                            var readTask = GetResult.Content.ReadAsAsync<BooksDTO[]>();
+                            readTask.Wait();
+                            var objects = readTask.Result;
+                            foreach (var obj in objects) LB.Add(obj);
+                        }
+                        else if (typeObject is ReadersDTO)
+                        {
+                            var readTask = GetResult.Content.ReadAsAsync<ReadersDTO[]>();
+                            readTask.Wait();
+                            var objects = readTask.Result;
+                            foreach (var obj in objects) LB.Add(obj);
+                        }
+                        else if (typeObject is BookReadersDTO)
+                        {
+                            var readTask = GetResult.Content.ReadAsAsync<BookReadersDTO[]>();
+                            readTask.Wait();
+                            var objects = readTask.Result;
+                            foreach (var obj in objects) LB.Add(obj);
+                        }
                     }
+
+                    //Возвращение полученного массива
+                    return LB;
                 }
-                //Console.ReadLine();
-                return LB;
+                else throw new Exception("Указанный тип объекта не соответствует ни одному доступному!");
             }
         }
-        
+
         /// <summary>
-        /// Получить информацию о продукте с ID
+        /// Получить информацию об объекте по ID
         /// </summary>
-        public static BooksDTO GetInfoBook(int id)
+        public static Object GetInfo(int id, Object typeObject)
         {
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(stringBaseAddress);
 
                 //HTTP GET
-                Task<HttpResponseMessage> responseTask = client.GetAsync("Books/" + id);
-                responseTask.Wait();
+                Task<HttpResponseMessage> responseTask = null;
+                if (typeObject is BooksDTO) responseTask = client.GetAsync("Books/" + id);
+                else if (typeObject is ReadersDTO) responseTask = client.GetAsync("Readers/" + id);
+                else if (typeObject is BookReadersDTO) responseTask = client.GetAsync("BookReaders/" + id);
 
-                HttpResponseMessage GetResult = responseTask.Result;
-
-                if (GetResult.IsSuccessStatusCode)
+                if (responseTask != null)
                 {
-
-                    Task<BooksDTO> readTask = GetResult.Content.ReadAsAsync<BooksDTO>();
-                    readTask.Wait();
-
-                    BooksDTO book = readTask.Result;
-                    return book;
+                    responseTask.Wait();
+                    HttpResponseMessage GetResult = responseTask.Result;
+                    if (GetResult.IsSuccessStatusCode)
+                    {
+                        if (typeObject is BooksDTO)
+                        {
+                            Task<BooksDTO> readTask = GetResult.Content.ReadAsAsync<BooksDTO>();
+                            readTask.Wait();
+                            BooksDTO book = readTask.Result;
+                            return book;
+                        }
+                        else if (typeObject is ReadersDTO)
+                        {
+                            Task<ReadersDTO> readTask = GetResult.Content.ReadAsAsync<ReadersDTO>();
+                            readTask.Wait();
+                            ReadersDTO reader = readTask.Result;
+                            return reader;
+                        }
+                        else if (typeObject is BookReadersDTO)
+                        {
+                            Task<BookReadersDTO> readTask = GetResult.Content.ReadAsAsync<BookReadersDTO>();
+                            readTask.Wait();
+                            BookReadersDTO bookreaders = readTask.Result;
+                            return bookreaders;
+                        }
+                        else throw new Exception("Информация об объекте по id не изъята: тип объекта не входит в допустиые!");
+                    }
+                    else throw new Exception("Объект с выбранным ID не найден!");
                 }
-                else throw new Exception("Книга с выбранным ID не найдена!");
+                else throw new Exception("Информация об объекте по id не изъята: тип объекта не входит в допустиые!");
             }
         }
-        
+
         /// <summary>
-        /// Добавление одной записи в таблицу
+        /// Удаление объекта по id
+        /// </summary>
+        public static string DeleteObj(int id, Object typeObject)
+        {
+            using (var client = new HttpClient())
+            {
+                // не забудьте поменять порт 
+                client.BaseAddress = new Uri(stringBaseAddress);
+                
+                string controllerName = "";
+                if (typeObject is BooksDTO) controllerName = "Books";
+                else if (typeObject is ReadersDTO) controllerName = "Readers";
+                else if (typeObject is BookReadersDTO) controllerName = "BookReaders";
+                else throw new Exception("Удаление объекта: тип объекта не соответствует ни одному допустимому!");
+
+                // операция удаления
+                var deleteTask = client.DeleteAsync($"" + controllerName + "/" + id);
+                deleteTask.Wait();
+
+                // получение StatusCode необязательно
+                HttpResponseMessage deleteResult = deleteTask.Result;
+                return deleteResult.StatusCode.ToString();
+            }
+        }
+
+
+        // Для книг (ГОТОВО)
+        /// <summary>
+        /// Добавление книги в таблицу
         /// </summary>
         public static string AddBook(string BookName, string Author, int Pages)
         {
@@ -115,26 +183,6 @@ namespace WpfApp
                     //Console.WriteLine(PostResult.StatusCode);
                     return PostResult.StatusCode.ToString();
                 }
-            }
-        }
-        
-        /// <summary>
-        /// Удаление книги по id
-        /// </summary>
-        public static string DeleteBook(int id)
-        {
-            using (var client = new HttpClient())
-            {
-                // не забудьте поменять порт 
-                client.BaseAddress = new Uri(stringBaseAddress);
-
-                // операция удаления
-                var deleteTask = client.DeleteAsync($"Books/" + id);
-                deleteTask.Wait();
-
-                // получение StatusCode необязательно
-                HttpResponseMessage deleteResult = deleteTask.Result;
-                return deleteResult.StatusCode.ToString();
             }
         }
         
@@ -201,7 +249,7 @@ namespace WpfApp
         }
 
         /// <summary>
-        /// Обновление информации о продукте с ID = 2
+        /// Обновление информации о книге
         /// </summary>
         public static void UpdateInfoBook(BooksDTO bookDTO)
         {
@@ -229,197 +277,18 @@ namespace WpfApp
 
         }
 
+
+
         //для читателей
+        //добавление
+        //получение по ФИО
+        //изменение - имеет ли смысл?
+        
 
-        // Для смешанной таблицы
 
-
-        //для продуктов
-        /*
-        /// <summary>
-        /// Получение всех записей в таблице
-        /// </summary>
-        public static void GetAllProducts()
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(stringBaseAddress);
-
-                //HTTP GET
-                Task<HttpResponseMessage> responseTask = client.GetAsync("products");
-                responseTask.Wait();
-
-                var GetResult = responseTask.Result;
-                if (GetResult.IsSuccessStatusCode)
-                {
-
-                    var readTask = GetResult.Content.ReadAsAsync<ProductDTO[]>();
-                    readTask.Wait();
-
-                    var products = readTask.Result;
-
-                    foreach (var product in products)
-                    {
-                        Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name,
-                        product.Category, product.Price);
-                    }
-                }
-                Console.ReadLine();
-            }
-        }
-
-        /// <summary>
-        /// Добавление одной записи в таблицу
-        /// </summary>
-        public static void AddProduct()
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(stringBaseAddress);
-
-                //HTTP POST --------------------------------------
-                var student = new ProductDTO()
-                {
-                    Name = "Сarrot",
-                    Category = "DDD",
-                    Price = 123
-                };
-
-                var postTask = client.PostAsJsonAsync<ProductDTO>("products", student);
-                postTask.Wait();
-
-                var PostResult = postTask.Result;
-                if (PostResult.IsSuccessStatusCode)
-                {
-
-                    var readTask = PostResult.Content.ReadAsAsync<ProductDTO>();
-                    readTask.Wait();
-
-                    var insertedProduct = readTask.Result;
-
-                    Console.WriteLine("ProductDTO {0} inserted with id: {1}",
-                                                           insertedProduct.Name, insertedProduct.Id);
-                }
-                else
-                {
-                    Console.WriteLine(PostResult.StatusCode);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Удаление продукта с ID = 2
-        /// </summary>
-        public static void DeleteProduct()
-        {
-            using (var client = new HttpClient())
-            {
-                // не забудьте поменять порт 
-                client.BaseAddress = new Uri(stringBaseAddress);
-
-                // операция удаления
-                var deleteTask = client.DeleteAsync($"products/2");
-                deleteTask.Wait();
-
-                // получение StatusCode необязательно
-                HttpResponseMessage deleteResult = deleteTask.Result;
-                Console.WriteLine(deleteResult.StatusCode.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Получить информацию о продукте с ID = 2
-        /// </summary>
-        public static void GetInfoProduct()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(stringBaseAddress);
-
-                //HTTP GET
-                Task<HttpResponseMessage> responseTask = client.GetAsync("products/2");
-                responseTask.Wait();
-
-                HttpResponseMessage GetResult = responseTask.Result;
-                if (GetResult.IsSuccessStatusCode)
-                {
-
-                    Task<ProductDTO> readTask = GetResult.Content.ReadAsAsync<ProductDTO>();
-                    readTask.Wait();
-
-                    ProductDTO product = readTask.Result;
-
-                    Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name,
-                    product.Category, product.Price);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получение информации о продуктах с заданной категорией
-        /// </summary>
-        public static void GetInfoProductsWithCategory()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(stringBaseAddress);
-
-                //HTTP GET
-                Task<HttpResponseMessage> responseTask = client.GetAsync("products?category=AAA");
-                responseTask.Wait();
-
-                HttpResponseMessage GetResult = responseTask.Result;
-                if (GetResult.IsSuccessStatusCode)
-                {
-
-                    Task<ProductDTO[]> readTask = GetResult.Content.ReadAsAsync<ProductDTO[]>();
-                    readTask.Wait();
-
-                    ProductDTO[] products = readTask.Result;
-
-                    foreach (var product in products)
-                    {
-                        Console.WriteLine("{0} {1} {2} {3}", product.Id, product.Name,
-                        product.Category, product.Price);
-                    }
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Обновление информации о продукте с ID = 2
-        /// </summary>
-        public static void UpdateInfoProduct()
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(stringBaseAddress);
-
-                ProductDTO product = new ProductDTO()
-                {
-                    Name = "Сarrot",
-                    Category = "DDD",
-                    Price = 123
-                };
-
-                Task<HttpResponseMessage> responseTask = client.PutAsJsonAsync("products/2", product);
-                responseTask.Wait();
-
-                HttpResponseMessage resultTask = responseTask.Result;
-                if (resultTask.IsSuccessStatusCode)
-                {
-                    Task<ProductDTO> readResult = resultTask.Content.ReadAsAsync<ProductDTO>();
-                    readResult.Wait();
-
-                    ProductDTO result = readResult.Result;
-                    Console.WriteLine("{0} {1} {2} {3}",
-                                        result.Id, result.Name, result.Category, product.Price);
-
-                }
-            }
-
-        }
-        */
+        //для смешанной таблицы
+        //добавление
+        //получение по ???
+        //изменение
     }
 }

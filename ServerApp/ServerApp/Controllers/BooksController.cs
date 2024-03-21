@@ -14,7 +14,6 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Mvc;
 
-
 // ГОТОВО!
 
 namespace ServerApp.Controllers
@@ -67,15 +66,6 @@ namespace ServerApp.Controllers
 
                 return Ok(book);
             }
-
-            /*
-            BooksDTO item = repository.Get(id);
-            if (item == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-            return item;
-            */
         }
 
         /// <summary>
