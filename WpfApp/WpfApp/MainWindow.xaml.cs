@@ -15,8 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp.DTOs;
 
-//переделать удаление на унифицированное
-//доделать все необходимые функции для остальных таблиц
+//!!! доделать:
+//изменение для читателей
+//добавление и изменение для общей
 
 namespace WpfApp
 {
@@ -36,11 +37,11 @@ namespace WpfApp
 
         //для всех типов объектов
         /// <summary>
-        /// Удалить выбранный
+        /// Удаление выбранного элемента в таблице
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DeleteBook(object sender, RoutedEventArgs e)
+        private void DeleteSelectedObject(object sender, RoutedEventArgs e)
         {
             if (SelectedItemID > -1)
             {
@@ -51,7 +52,7 @@ namespace WpfApp
             else throw new Exception("Элемент для удаления не выбран!");
         }
         
-        //доделать, когда будет добавлена общая таблица и элементы WPF
+        //!!! доделать, когда будет добавлена общая таблица и элементы WPF
         /// <summary>
         /// Изменение выбранного элемента в таблице
         /// </summary>
@@ -102,7 +103,7 @@ namespace WpfApp
 
         //для книг
         /// <summary>
-        /// Просмотр всех книг
+        /// Просмотр таблицы книг
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -112,11 +113,13 @@ namespace WpfApp
             {
                 typeObject = new BooksDTO();
                 RefreshElemTable();
+                BookAddingSpace.Visibility = Visibility.Visible;
+                ReaderAddingSpace.Visibility = Visibility.Hidden;
             }
         }
 
         /// <summary>
-        /// Добавить книгу
+        /// Добавление книги
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -136,7 +139,7 @@ namespace WpfApp
         }
         
         /// <summary>
-        /// Изменить книгу
+        /// Изменение книги
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -159,7 +162,7 @@ namespace WpfApp
 
         //для читателей
         /// <summary>
-        /// Просмотр всех читателей
+        /// Просмотр таблицы читателей
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -169,16 +172,50 @@ namespace WpfApp
             {
                 typeObject = new ReadersDTO();
                 RefreshElemTable();
+                BookAddingSpace.Visibility = Visibility.Hidden;
+                ReaderAddingSpace.Visibility = Visibility.Visible;
             }
         }
-        //добавить
-        //изменить
+
+        /// <summary>
+        /// Добавление читателя
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddReader(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                WPFfunctions.AddReader(AddFIO.Text);
+                RefreshElemTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        //!!! изменить
 
 
         //для общей таблицы
-        //просмотр всех записей
-        //добавить
-        //изменить
+        /// <summary>
+        /// Просмотр таблицы общих записей
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SeeAllBookReaders(object sender, RoutedEventArgs e)
+        {
+            if (ElemTable.IsLoaded)
+            {
+                typeObject = new BookReadersDTO();
+                RefreshElemTable();
+                BookAddingSpace.Visibility = Visibility.Hidden;
+                ReaderAddingSpace.Visibility = Visibility.Hidden;
+            }
+        }
+        //!!! добавить
+        //!!! изменить
 
 
         //вспомогательные методы

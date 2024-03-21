@@ -12,7 +12,8 @@ namespace WpfApp
     {
         private static string stringBaseAddress = "http://localhost:50237/api/";
 
-        //общее: переделать повторяющийся код для выбора типа объекта
+        //обще
+        //!!! переделать повторяющийся код для выбора типа объекта
         /// <summary>
         /// Получение всех записей в таблице
         /// </summary>
@@ -57,6 +58,7 @@ namespace WpfApp
                             var readTask = GetResult.Content.ReadAsAsync<BookReadersDTO[]>();
                             readTask.Wait();
                             var objects = readTask.Result;
+                            //!!! не выводит информацию о книге и читателе
                             foreach (var obj in objects) LB.Add(obj);
                         }
                     }
@@ -280,15 +282,46 @@ namespace WpfApp
 
 
         //для читателей
-        //добавление
-        //получение по ФИО
+        /// <summary>
+        /// Добавление читателя в таблицу
+        /// </summary>
+        public static string AddReader(string FIO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(stringBaseAddress);
+
+                //HTTP POST --------------------------------------
+                var reader = new ReadersDTO()
+                {
+                    FIO = FIO
+                };
+
+                var postTask = client.PostAsJsonAsync<ReadersDTO>("Readers", reader);
+                postTask.Wait();
+
+                var PostResult = postTask.Result;
+                if (PostResult.IsSuccessStatusCode)
+                {
+                    var readTask = PostResult.Content.ReadAsAsync<ReadersDTO>();
+                    readTask.Wait();
+                    var insertedReader = readTask.Result;
+                    return "Reader " + insertedReader.FIO + " inserted with id: " + insertedReader.ID;
+                }
+                else
+                {
+                    return PostResult.StatusCode.ToString();
+                }
+            }
+        }
+        //!!! получение по ФИО
         //изменение - имеет ли смысл?
-        
+
 
 
         //для смешанной таблицы
-        //добавление
-        //получение по ???
-        //изменение
+        //!!! добавление
+        //!!! получение по ???
+        //!!! изменение
     }
 }
