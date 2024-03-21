@@ -15,7 +15,7 @@ using System.Web.Http.Description;
 using System.Web.Mvc;
 
 
-// ГОТОВО!!! для string
+// ГОТОВО!
 
 namespace ServerApp.Controllers
 {

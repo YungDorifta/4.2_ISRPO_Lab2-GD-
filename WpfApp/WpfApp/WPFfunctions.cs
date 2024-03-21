@@ -134,7 +134,6 @@ namespace WpfApp
 
                 // получение StatusCode необязательно
                 HttpResponseMessage deleteResult = deleteTask.Result;
-                //Console.WriteLine(deleteResult.StatusCode.ToString());
                 return deleteResult.StatusCode.ToString();
             }
         }
@@ -212,7 +211,6 @@ namespace WpfApp
                 
                 Task<HttpResponseMessage> responseTask = client.PutAsJsonAsync("Books/" + bookDTO.ID, bookDTO);
                 responseTask.Wait();
-
                 
                 HttpResponseMessage resultTask = responseTask.Result;
 

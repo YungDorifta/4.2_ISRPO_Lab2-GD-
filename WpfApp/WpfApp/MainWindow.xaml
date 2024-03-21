@@ -13,7 +13,7 @@
             <MenuItem Height="25" Width="98" Header="Общая таблица" Click="SeeAllBooks"/>
         </Menu>
 
-        <DataGrid x:Name="ElemTable" IsReadOnly="True" AutoGenerateColumns="True" Margin="10,30,10,269" Loaded="ElemTableLoaded" SelectionChanged="ElemTable_SelectionChanged">
+        <DataGrid x:Name="ElemTable" IsReadOnly="True" AutoGenerateColumns="True" Margin="10,30,10,302" Loaded="ElemTableLoaded" SelectionChanged="ElemTable_SelectionChanged">
             <DataGrid.Resources>
 
             </DataGrid.Resources>
@@ -37,8 +37,9 @@
                 <TextBox x:Name="UpBookname" Height="19" TextWrapping="Wrap" Text="Название" VerticalAlignment="Top"/>
                 <TextBox x:Name="UpAuthor" Height="19" Margin="0,5,0,0" TextWrapping="Wrap" Text="Автор" VerticalAlignment="Top"/>
                 <TextBox x:Name="UpPages" Height="19" Margin="0,5,0,0" TextWrapping="Wrap" Text="Кол-во страниц" VerticalAlignment="Top"/>
-                <Button Content="Изменить выбранную книгу" Margin="0,5,0,0" Click="UpdateBook" Height="153"/>
+                <Button Content="Изменить выбранную книгу" Margin="0,5,0,0" Click="UpdateBook" Height="152"/>
             </StackPanel>
         </GroupBox>
+        <Label x:Name="SelectedLabel" Content="" Margin="10,0,10,262" VerticalAlignment="Bottom" Height="35"/>
     </Grid>
 </Window>

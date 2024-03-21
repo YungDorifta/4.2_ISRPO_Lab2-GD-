@@ -27,6 +27,8 @@ namespace WpfApp
         //выбранный элемент
         private int SelectedItemID = -1;
         
+
+
         //для книг
         /// <summary>
         /// Просмотр книг
@@ -69,16 +71,34 @@ namespace WpfApp
         /// <param name="e"></param>
         private void DeleteBook(object sender, RoutedEventArgs e)
         {
-            BooksDTO book = WPFfunctions.GetInfoBook(SelectedItemID);
-            int ID = book.ID;
-            WPFfunctions.DeleteBook(ID);
-            RefreshElemTableBooks();
+            if (SelectedItemID > -1)
+            {
+                BooksDTO book = WPFfunctions.GetInfoBook(SelectedItemID);
+                int ID = book.ID;
+                WPFfunctions.DeleteBook(ID);
+                RefreshElemTableBooks();
+                SelectedItemID = -1;
+            }
+            else throw new Exception("Книга для удаления не выбрана!");
         }
 
-        //Изменить книгу
+        /// <summary>
+        /// Изменить книгу
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UpdateBook(object sender, RoutedEventArgs e)
         {
-
+            if (UpBookname.Text != "" && UpAuthor.Text != "" && UpPages.Text != "")
+            {
+                int argUpdatedPages;
+                if (Int32.TryParse(UpPages.Text, out argUpdatedPages) && SelectedItemID >= 0)
+                {
+                    BooksDTO UpBook = new BooksDTO { ID = SelectedItemID, BookName = UpBookname.Text, Author = UpAuthor.Text, Pages = argUpdatedPages };
+                    WPFfunctions.UpdateInfoBook(UpBook);
+                    RefreshElemTableBooks();
+                }
+            }
         }
         
         /// <summary>
@@ -88,8 +108,30 @@ namespace WpfApp
         /// <param name="e"></param>
         private void ElemTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //SelectedItemID = ElemTable.SelectedItem.ID;
+            try
+            {
+                if (ElemTable.SelectedItem != null)
+                {
+                    BooksDTO selectedBook = ElemTable.SelectedItem as BooksDTO;
+                    SelectedItemID = selectedBook.ID;
+                    SelectedLabel.Content = "Выбранный элемент: " + selectedBook.ID.ToString() + " '" + selectedBook.BookName.ToString().TrimEnd() + "' (" + selectedBook.Author.ToString().TrimEnd() + ", " + selectedBook.Pages.ToString() + " страниц)";
+                    UpBookname.Text = selectedBook.BookName.ToString().TrimEnd();
+                    UpAuthor.Text = selectedBook.Author.ToString().TrimEnd();
+                    UpPages.Text = selectedBook.Pages.ToString();
+                }
+                else
+                {
+                    SelectedLabel.Content = "Выбранный элемент: отсутствует";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
         }
+
+
 
         //вспомогательные методы
         /// <summary>
@@ -100,8 +142,7 @@ namespace WpfApp
             List<BooksDTO> books = WPFfunctions.GetAllBooks();
             ElemTable.ItemsSource = books;
         }
-
-
+        
         /// <summary>
         /// Проверка на ввод числа
         /// </summary>
@@ -139,22 +180,5 @@ namespace WpfApp
         {
             RefreshElemTableBooks();
         }
-
-        /// <summary>
-        /// Загрузка списков книг по умолчанию
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BookListLoaded(object sender, RoutedEventArgs e)
-        {
-            (sender as ListBox).Items.Clear();
-            List<BooksDTO> books = WPFfunctions.GetAllBooks();
-            foreach (BooksDTO book in books)
-            {
-                (sender as ListBox).Items.Add(book.BookName);
-            }
-        }
-
-        
     }
 }
