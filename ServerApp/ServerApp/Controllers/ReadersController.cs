@@ -68,20 +68,20 @@ namespace ServerApp.Controllers
         /// <summary>
         /// Найти читателей по ФИО
         /// </summary>
-        /// <param name="FIO"></param>
+        /// <param name="FIOParam"></param>
         /// <returns></returns>
-        public ReadersDTO GetReader(string FIO)
+        public ReadersDTO GetReader(string FIOParam)
         {
             using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
             {
-                List<Readers> readers = db.Readers.Where(b => b.FIO.Contains(FIO)).ToList();
+                List<Readers> readers = db.Readers.Where(b => b.FIO.Contains(FIOParam)).ToList();
                 List<ReadersDTO> readersDTO = new List<ReadersDTO>();
                 if (readers.Count > 0)
                 {
                     foreach (var reader in readers) readersDTO.Add(new ReadersDTO { ID = reader.ID, FIO = reader.FIO });
                     return readersDTO[0];
                 }
-                else throw new Exception("Читателей с введенным ФИО не найдено!");
+                else return null; //throw new Exception("Читателей с введенным ФИО не найдено!");
             }
         }
 

@@ -131,9 +131,13 @@ namespace ServerApp.Controllers
             using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
             {
                 List<Books> books = db.Books.Where(b => b.Bookname == booknameParam).ToList();
-                Books book = books[0];
-                BooksDTO booksDTO = new BooksDTO { ID = book.ID, BookName = book.Bookname, Author = book.Author, Pages = book.Pages };
-                return booksDTO;
+                if (books.Count > 0)
+                {
+                    Books book = books[0];
+                    BooksDTO booksDTO = new BooksDTO { ID = book.ID, BookName = book.Bookname, Author = book.Author, Pages = book.Pages };
+                    return booksDTO;
+                }
+                else return null; //throw new Exception("Книг с указанным названием не найдено");
             }
         }
 

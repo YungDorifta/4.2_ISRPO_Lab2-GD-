@@ -114,7 +114,13 @@ namespace WpfApp
                 typeObject = new BooksDTO();
                 RefreshElemTable();
                 BookAddingSpace.Visibility = Visibility.Visible;
+                BookUpdatingSpace.Visibility = Visibility.Visible;
+
+                AddBookBtn.Visibility = Visibility.Visible;
                 ReaderAddingSpace.Visibility = Visibility.Hidden;
+
+                DateAddingSpace.Visibility = Visibility.Hidden;
+                AddBookReaderBtn.Visibility = Visibility.Hidden;
             }
         }
 
@@ -172,8 +178,16 @@ namespace WpfApp
             {
                 typeObject = new ReadersDTO();
                 RefreshElemTable();
+
                 BookAddingSpace.Visibility = Visibility.Hidden;
+                BookUpdatingSpace.Visibility = Visibility.Hidden;
+
+                ReaderAddingSpace.HorizontalAlignment = HorizontalAlignment.Left;
                 ReaderAddingSpace.Visibility = Visibility.Visible;
+                AddReaderBtn.Visibility = Visibility.Visible;
+
+                DateAddingSpace.Visibility = Visibility.Hidden;
+                AddBookReaderBtn.Visibility = Visibility.Hidden;
             }
         }
 
@@ -194,8 +208,8 @@ namespace WpfApp
                 MessageBox.Show(ex.Message);
             }
         }
+        //изменить запись: не используется
 
-        //!!! изменить
 
 
         //для общей таблицы
@@ -210,12 +224,44 @@ namespace WpfApp
             {
                 typeObject = new BookReadersDTO();
                 RefreshElemTable();
-                BookAddingSpace.Visibility = Visibility.Hidden;
-                ReaderAddingSpace.Visibility = Visibility.Hidden;
+
+                BookAddingSpace.Visibility = Visibility.Visible;
+                BookUpdatingSpace.Visibility = Visibility.Hidden;
+                AddBookBtn.Visibility = Visibility.Hidden;
+
+                ReaderAddingSpace.HorizontalAlignment = HorizontalAlignment.Right;
+                ReaderAddingSpace.Visibility = Visibility.Visible;
+                AddReaderBtn.Visibility = Visibility.Hidden;
+
+                DateAddingSpace.Visibility = Visibility.Visible;
+                AddBookReaderBtn.Visibility = Visibility.Visible;
             }
         }
-        //!!! добавить
-        //!!! изменить
+        
+        /// <summary>
+        /// Добавление совмещенной записи
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddBookReader(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DateTime argStartDate = StartDatePicker.DisplayDate;
+                DateTime argEndDate = EndDatePicker.DisplayDate;
+                int argPages = 0;
+                Int32.TryParse(AddPage.Text.ToString(), out argPages);
+                if (argStartDate != null && argEndDate != null && argPages > 0) WPFfunctions.AddBookReader(AddFIO.Text, AddBookname.Text, AddAuthor.Text, argPages, argStartDate, argEndDate);
+                RefreshElemTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        //изменить запись: не используется 
+
 
 
         //вспомогательные методы

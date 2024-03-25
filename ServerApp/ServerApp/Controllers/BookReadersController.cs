@@ -4,15 +4,15 @@ using ServerApp.Models.Interfaces;
 using ServerApp.Models.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Description;
 using System.Web.Mvc;
-
-//!!! переделать под DTO
-//как реализовать передачу совмещенных данных?
 
 namespace ServerApp.Controllers
 {
@@ -20,9 +20,8 @@ namespace ServerApp.Controllers
     {
         static readonly IBookReaderRepository repository = new BookReaderRepository();
         
-        //!!! не работает, как должно
         /// <summary>
-        /// Передать DTO всех совмещенных объектов
+        /// (ГОТОВО) Передать DTO всех совмещенных объектов
         /// </summary>
         /// <returns></returns>
         public IEnumerable<BookReadersDTO> GetAllBookReaders()
@@ -34,41 +33,134 @@ namespace ServerApp.Controllers
                     book => book.ID,
                     (bookReader, book) => new
                     {
+                        bookReaderID = bookReader.ID,
+                        bookID = book.ID,
                         bookname = book.Bookname,
                         author = book.Author,
-                        bookReaderID = bookReader.ID,
-                        readerID = bookReader.ReaderID
+                        pages = book.Pages,
+                        readerID = bookReader.ReaderID,
+                        startdate = bookReader.StartDate,
+                        enddate = bookReader.EndDate
                     }).Join(db.Readers, bookReader => bookReader.bookReaderID, reader => reader.ID,
                     (bookReader, reader) => new BookReadersDTO() {
-                        //!!! Здесь заместо нынешнего ДТО вставить объект со всеми необходимыми данными
+                        ID = bookReader.bookReaderID,
+                        readerID = reader.ID,
+                        FIO = reader.FIO,
+                        bookID = bookReader.bookID,
+                        BookName = bookReader.bookname,
+                        Author = bookReader.author,
+                        Pages = bookReader.pages,
+                        StartDate = bookReader.startdate,
+                        EndDate = bookReader.enddate
                     }).ToList();
                 
                 return bookReaders;
             }
         }
 
-        //Достать совмещенную запись по ID
-        public BookReaders GetBookReader(int id)
+        /// <summary>
+        /// Достать совмещенную запись по ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(BookReadersDTO))]
+        public async Task<IHttpActionResult> GetBookReader(int id)
         {
-            BookReaders item = repository.Get(id);
-            if (item == null)
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                var bookreader = db.BookReaders.Join(db.Books,
+                    bookReader => bookReader.BookID,
+                    book => book.ID,
+                    (bookReader, book) => new
+                    {
+                        bookReaderID = bookReader.ID,
+                        bookID = book.ID,
+                        bookname = book.Bookname,
+                        author = book.Author,
+                        pages = book.Pages,
+                        readerID = bookReader.ReaderID,
+                        startdate = bookReader.StartDate,
+                        enddate = bookReader.EndDate
+                    }).Join(db.Readers, bookReader => bookReader.bookReaderID, reader => reader.ID,
+                    (bookReader, reader) => new BookReadersDTO()
+                    {
+                        ID = bookReader.bookReaderID,
+                        readerID = reader.ID,
+                        FIO = reader.FIO,
+                        bookID = bookReader.bookID,
+                        BookName = bookReader.bookname,
+                        Author = bookReader.author,
+                        Pages = bookReader.pages,
+                        StartDate = bookReader.startdate,
+                        EndDate = bookReader.enddate
+                    }).SingleOrDefaultAsync(b => b.ID == id);
+
+                if (bookreader == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(bookreader);
             }
-            return item;
         }
 
-        //Добавить совмещенную запись
-        public HttpResponseMessage PostBookReader(BookReaders item)
+        /// <summary>
+        /// Добавить совмещенную запись
+        /// </summary>
+        /// <param name="bookReaderArg"></param>
+        /// <returns></returns>
+        public HttpResponseMessage PostBookReader(BookReadersDTO bookReaderArg)
         {
-            item = repository.Add(item);
-            var response = Request.CreateResponse<BookReaders>(HttpStatusCode.Created, item);
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
+            {
+                Books book = db.Books.Where(b => b.Bookname == bookReaderArg.BookName).FirstOrDefault();
+                Readers reader = db.Readers.Where(b => b.FIO == bookReaderArg.FIO).FirstOrDefault();
+                if (book == null) {
+                    //добавить книгу при отсутствии
+                    book = new Books { Bookname = bookReaderArg.BookName, Author = bookReaderArg.Author, Pages = bookReaderArg.Pages};
+                    db.Books.Add(book);
+                    //db.SaveChanges();
+                }
+                if (reader == null)
+                {
+                    //добавить читателя при отсутствии
+                    reader = new Readers { FIO = bookReaderArg.FIO };
+                    db.Readers.Add(reader);
+                    //db.SaveChanges();
+                }
+                db.SaveChanges();
 
-            string uri = Url.Link("DefaultApi", new { id = item.ID });
-            response.Headers.Location = new Uri(uri);
-            return response;
+                book = db.Books.Where(b => b.Bookname == bookReaderArg.BookName).FirstOrDefault();
+                reader = db.Readers.Where(b => b.FIO == bookReaderArg.FIO).FirstOrDefault();
+                BookReaders bookreader = new BookReaders { BookID = book.ID, ReaderID = reader.ID, StartDate = bookReaderArg.StartDate, EndDate = bookReaderArg.EndDate };
+                db.BookReaders.Add(bookreader);
+                db.SaveChanges();
+
+                var response = Request.CreateResponse<BookReaders>(HttpStatusCode.Created, bookreader);
+                string uri = Url.Link("DefaultApi", new { id = bookReaderArg.ID });
+                response.Headers.Location = new Uri(uri);
+                return response;
+            }
         }
-        
+
+        /// <summary>
+        /// Удалить совмещенную запись
+        /// </summary>
+        /// <param name="id"></param>
+        public void DeleteBookReader(int id)
+        {
+            using (db_Belashev_ISRPOEntitiesActual db = new db_Belashev_ISRPOEntitiesActual())
+            {
+                var bookreader = db.BookReaders.Where(b => b.ID == id).FirstOrDefault();
+                db.BookReaders.Remove(bookreader);
+                db.SaveChanges();
+            };
+        }
+
+
+
+        /*не используется
+
         //Достать список с указанным id читателя
         public IEnumerable<BookReaders> GetBookReadersByReaderId(int ReaderID)
         {
@@ -102,11 +194,6 @@ namespace ServerApp.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
         }
-
-        //Удалить совмещенную запись
-        public void DeleteBookReader(int id)
-        {
-            repository.Remove(id);
-        }
+        */
     }
 }

@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
-        Title="Библиотека: книги" Height="606.683" Width="700" MinWidth="700">
-    
+        Title="Библиотека: книги" Height="600" Width="700" MinWidth="700">
+
     <!-- Вопросы по проекту: нужно ли изменение записей? Как реализовать передачу совмещенных объектов? -->
-    
-    <Grid x:Name="BooksGrid">
+
+    <Grid x:Name="LibraryGrid" Margin="0,0,0,1">
         <Menu x:Name="TypeSelectorMenu" 
               HorizontalAlignment="Left" 
               Height="25" 
@@ -23,7 +23,7 @@
         <DataGrid x:Name="ElemTable" 
                   IsReadOnly="True" 
                   AutoGenerateColumns="True" 
-                  Margin="10,30,10,290" 
+                  Margin="10,30,10,348" 
                   Loaded="ElemTableLoaded" 
                   SelectionChanged="ElemTable_SelectionChanged">
             <DataGrid.Resources>
@@ -33,17 +33,17 @@
 
         <Label x:Name="SelectedLabel" 
                Content="Выбранный элемент: отсутствует" 
-               Margin="10,0,10,262" 
+               Margin="10,0,10,321" 
                VerticalAlignment="Bottom" 
-               Height="25">
-            
+               Height="27">
+
         </Label>
-        
+
         <GroupBox x:Name="BookAddingSpace" 
                   Header="Добавление книги" 
                   HorizontalAlignment="Left" 
-                  Margin="10,0,0,10" 
-                  Width="290" 
+                  Margin="10,0,0,69" 
+                  Width="221" 
                   Height="247" 
                   VerticalAlignment="Bottom" 
                   Visibility="Visible">
@@ -79,7 +79,8 @@
                          Text="10" 
                          VerticalAlignment="Top" 
                          KeyDown="CheckIfNum"/>
-                <Button Margin="0,5,0,0" 
+                <Button x:Name="AddBookBtn"
+                        Margin="0,5,0,0" 
                         Content="Добавить" 
                         Click="AddBook" 
                         Height="20" 
@@ -92,7 +93,7 @@
                   Margin="0,0,10,69" 
                   HorizontalAlignment="Right" 
                   Width="369" 
-                  Height="188" 
+                  Height="247" 
                   VerticalAlignment="Bottom"
                   Visibility="Visible">
             <StackPanel>
@@ -102,26 +103,26 @@
                 <TextBox x:Name="UpAuthor" Height="19" Margin="0,0,0,0" TextWrapping="Wrap" Text="Автор" VerticalAlignment="Top"/>
                 <Label Content="Кол-во страниц:" Height="24" FontSize="10" Margin="-2,0,0,0"/>
                 <TextBox x:Name="UpPages" Height="19" Margin="0,0,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top"/>
-                <Button Content="Изменить выбранную книгу" Margin="0,5,0,0" Click="UpdateBook" Height="29"/>
+                <Button Content="Изменить выбранную книгу" Margin="0,73,0,0" Click="UpdateBook" Height="20"/>
             </StackPanel>
         </GroupBox>
 
         <GroupBox x:Name="ReaderAddingSpace" 
                   Header="Добавление читателя" 
                   HorizontalAlignment="Left" 
-                  Margin="10,0,0,10" 
-                  Width="290" 
+                  Margin="10,0,10,69"  
+                  Width="221" 
                   Height="247" 
                   VerticalAlignment="Bottom" 
                   Visibility="Hidden">
             <StackPanel>
                 <Label Content="ФИО:" Height="24" FontSize="10" Margin="-2,0,0,0"/>
                 <TextBox x:Name="AddFIO" Height="168" Margin="0,5,0,0" TextWrapping="Wrap" Text="Иванов Иван Иванович" VerticalAlignment="Top"/>
-                <Button Margin="0,5,0,0" Content="Добавить" Click="AddReader" Height="20" RenderTransformOrigin="0.5,0.5"/>
+                <Button x:Name="AddReaderBtn" Margin="0,5,0,0" Content="Добавить" Click="AddReader" Height="20" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </GroupBox>
 
-        <!-- Доделать изменение читателя?  -->
+        <!-- Доделать изменение читателя не требуется -->
         <GroupBox x:Name="ReaderUpdatingSpace" 
                   Header="Изменение книги" 
                   Margin="0,0,10,69" 
@@ -141,23 +142,29 @@
             </StackPanel>
         </GroupBox>
 
-        <!-- !!! Доделать добавление совмещенной записи!  -->
-        <GroupBox x:Name="BookReaderAddingSpace" 
-                  Header="Добавление читателя" 
-                  HorizontalAlignment="Left" 
-                  Margin="10,0,0,10" 
-                  Width="290" 
+        <GroupBox x:Name="DateAddingSpace" 
+                  Header="Добавление дат" 
+                  HorizontalAlignment="Center" 
+                  Margin="236,0,231,69" 
                   Height="247" 
                   VerticalAlignment="Bottom" 
-                  Visibility="Hidden">
+                  Visibility="Hidden" Width="186">
             <StackPanel>
-                <Label Content="ФИО:" Height="24" FontSize="10" Margin="-2,0,0,0"/>
-                <TextBox x:Name="d" Height="168" Margin="0,5,0,0" TextWrapping="Wrap" Text="Иванов Иван Иванович" VerticalAlignment="Top"/>
-                <Button Margin="0,5,0,0" Content="Добавить" Click="AddReader" Height="20" RenderTransformOrigin="0.5,0.5"/>
+                <Label Content="Дата начала:"/>
+                <DatePicker x:Name="StartDatePicker" Margin="0,10,0,0"/>
+                <Label Content="Дата окончания"/>
+                <DatePicker x:Name="EndDatePicker" Margin="0,10,0,0"/>
             </StackPanel>
         </GroupBox>
 
-        <!-- Добавить изменение совмещенной записи?  -->
+        <Button x:Name="AddBookReaderBtn" Margin="16,0,16,78"
+                Height="20"
+                VerticalAlignment="Bottom" 
+                Content="Добавить"
+                Visibility="Hidden"
+                Click="AddBookReader"></Button>
+
+        <!-- Добавить изменение совмещенной записи не требуется -->
         <GroupBox x:Name="BookReaderUpdatingSpace" 
                   Header="Изменение книги" 
                   Margin="0,0,10,69" 
@@ -179,9 +186,7 @@
 
         <GroupBox x:Name="DeletingSpace" 
                   Header="Удаление элемента" 
-                  HorizontalAlignment="Right"  
-                  Width="369" 
-                  Margin="0,0,10,10" 
+                  Margin="10,0,10,10" 
                   Height="59" 
                   VerticalAlignment="Bottom">
             <StackPanel>

@@ -11,8 +11,12 @@ namespace WpfApp.DTOs
     public class BookReadersDTO
     {
         public int ID { get; set; }
-        public BooksDTO book { get; set; }
-        public ReadersDTO reader { get; set; }
+        public int readerID { get; set; }
+        public string FIO { get; set; }
+        public int bookID { get; set; }
+        public string BookName { get; set; }
+        public string Author { get; set; }
+        public int Pages { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }

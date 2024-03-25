@@ -12,7 +12,7 @@ namespace WpfApp
     {
         private static string stringBaseAddress = "http://localhost:50237/api/";
 
-        //обще
+        //общее
         //!!! переделать повторяющийся код для выбора типа объекта
         /// <summary>
         /// Получение всех записей в таблице
@@ -314,14 +314,85 @@ namespace WpfApp
                 }
             }
         }
-        //!!! получение по ФИО
-        //изменение - имеет ли смысл?
+        
+        /// <summary>
+        /// Получение записи по ФИО
+        /// </summary>
+        /// <param name="FIOParam"></param>
+        /// <returns></returns>
+        public static ReadersDTO GetInfoReaderWithFIO(string FIOParam)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(stringBaseAddress);
+
+                //HTTP GET
+                Task<HttpResponseMessage> responseTask = client.GetAsync("Readers?FIOParam=" + FIOParam);
+                responseTask.Wait();
+
+                HttpResponseMessage GetResult = responseTask.Result;
+
+                ReadersDTO reader = null;
+                if (GetResult.IsSuccessStatusCode)
+                {
+
+                    Task<ReadersDTO> readTask = GetResult.Content.ReadAsAsync<ReadersDTO>();
+                    readTask.Wait();
+                    reader = readTask.Result;
+                }
+                return reader;
+            }
+        }
+        //изменение записи
 
 
 
         //для смешанной таблицы
-        //!!! добавление
-        //!!! получение по ???
-        //!!! изменение
+        /// <summary>
+        /// Добавление общей записи
+        /// </summary>
+        /// <param name="FIO"></param>
+        /// <param name="BookName"></param>
+        /// <param name="Author"></param>
+        /// <param name="Pages"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
+        public static string AddBookReader(string FIO, string BookName, string Author, int Pages, DateTime StartTime, DateTime EndTime )
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(stringBaseAddress);
+                
+                //HTTP POST --------------------------------------
+                var bookReader = new BookReadersDTO()
+                {
+                    FIO = FIO,
+                    BookName = BookName,
+                    Author = Author,
+                    Pages = Pages,
+                    StartDate = StartTime,
+                    EndDate = EndTime
+                };
+
+                var postTask = client.PostAsJsonAsync<BookReadersDTO>("BookReaders", bookReader);
+                postTask.Wait();
+
+                var PostResult = postTask.Result;
+                if (PostResult.IsSuccessStatusCode)
+                {
+                    var readTask = PostResult.Content.ReadAsAsync<BookReadersDTO>();
+                    readTask.Wait();
+                    var insertedReader = readTask.Result;
+                    return "BookReader (reader name " + insertedReader.FIO + ", book " + insertedReader.BookName + " inserted with id: " + insertedReader.ID;
+                }
+                else
+                {
+                    return PostResult.StatusCode.ToString();
+                }
+            }
+        }
+        //получение записи по <...>
+        //изменение
     }
 }
